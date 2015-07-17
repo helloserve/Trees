@@ -9,7 +9,7 @@ This library implements the basic set of typed trees found in computer science.
 The current list of implemented trees are
 - Binary trees
 
-The future list of trees to be impleted include
+The future list of trees to be implemented include
 - Red/black trees
 
 All tree implementations are fully functional and can be used as is. This is based on default ```IComparer``` implementations for the various types.
