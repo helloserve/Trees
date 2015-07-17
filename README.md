@@ -20,7 +20,7 @@ All objects implement either the ```ITree``` or ```ILeaf``` interfaces. These in
 
 ## Extendibility
 
-All implementations take ```Expressions``` or ```IComparer``` instances as parameters, so you can easily specify how your tree should perform branching without having to extend any classes.
+Implementations take ```Expressions``` or ```IComparer``` instances as parameters where applicable, so you can easily specify how your tree should perform branching without having to extend any classes.
 
 ## No LINQ
 
