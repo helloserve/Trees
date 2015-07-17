@@ -8,28 +8,28 @@ using System.Threading.Tasks;
 
 namespace helloserve.com.Trees.Core
 {
-    public class BinaryLeaf<T, TProperty> : LeafBase<T>, ILeaf<T>
-        where TProperty : IComparable
+    public class BinaryLeaf<T, TProperty> : LeafBase<T>, ILeaf<T>        
     {
-        internal BinaryLeaf(Expression<Func<T, TProperty>> expression)
+        internal BinaryLeaf(Func<T, TProperty> function, IComparer<TProperty> comparer)
             : base()
         {
-            _expression = expression;
+            _function = function;
+            _comparer = comparer;
             Leafs = new List<ILeaf<T>>();
         }
 
         private T _item;
-        private Expression<Func<T, TProperty>> _expression;
         private Func<T, TProperty> _function;
+        private IComparer<TProperty> _comparer;
 
         private void EnsureLeafsExist(int index)
         {
             if (Leafs.Count < 2)
                 while (Leafs.Count < 2)
-                    Leafs.Add(new BinaryLeaf<T, TProperty>(_expression));
+                    Leafs.Add(new BinaryLeaf<T, TProperty>(_function, _comparer));
 
             if (Leafs[index] == null)
-                Leafs[index] = new BinaryLeaf<T, TProperty>(_expression);
+                Leafs[index] = new BinaryLeaf<T, TProperty>(_function, _comparer);
         }
 
         protected ILeaf<T> LeftLeaf
@@ -55,12 +55,21 @@ namespace helloserve.com.Trees.Core
             if (_item == null)
                 throw new InvalidOperationException("No data to compare against. Set the first item.");
 
-            if (_function == null)
-                _function = _expression.Compile();
+            int compare = 0;
+            if (_comparer == null)
+            {
+                var comparable = _function(item) as IComparable;
+                if (comparable == null)
+                    throw new InvalidOperationException(string.Format("'{0}' does not have a default IComparable implementation", typeof(T)));
 
-            int compare = _function(item).CompareTo(_function(_item));
+                compare = comparable.CompareTo(_function(_item));
+            }
+            else
+            {
+                compare = _comparer.Compare(_function(item), _function(_item));
+            }
 
-            if (compare < 0)
+            if (compare <= 0)
                 return LeftLeaf;
             else
                 return RightLeaf;
@@ -68,9 +77,10 @@ namespace helloserve.com.Trees.Core
 
         public override void Add(T item)
         {
-            if (_item == null)
+            if (!HasValue)
             {
                 _item = item;
+                HasValue = true;
                 return;
             }
 
@@ -85,7 +95,7 @@ namespace helloserve.com.Trees.Core
 
         private void TraverseDepthFirst_Implementation(TreeTraverseOrder order, ref IList<T> list)
         {
-            if (_item == null)
+            if (!HasValue)
                 return;
 
             switch (order)

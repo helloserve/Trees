@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 
 namespace helloserve.com.Trees.Core.Tests.Base
 {
-    public class BaseTests
+    public class BaseTests<T>
     {
-        public ITree<SimpleObject> Tree;
+        public ITree<T> Tree;
 
-        public void Setup(ITree<SimpleObject> tree)
+        public void Setup(ITree<T> tree)
         {
             Tree = tree;
         }
@@ -19,6 +19,15 @@ namespace helloserve.com.Trees.Core.Tests.Base
         public void TearDown()
         {
 
+        }
+
+        internal class ReverseComparer<T> : IComparer<T>
+            where T : IComparable<T>
+        {
+            public int Compare(T x, T y)
+            {
+                return -1 * x.CompareTo(y);
+            }
         }
     }
 }

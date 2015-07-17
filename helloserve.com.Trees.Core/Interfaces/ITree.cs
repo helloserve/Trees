@@ -10,6 +10,7 @@ namespace helloserve.com.Trees.Core.Interfaces
     {
         ILeaf<T> Leaf { get; set; }
         void Add(T item);
+        void AddRange(IEnumerable<T> collection);
         IList<T> Traverse(TreeTraverseMode mode, TreeTraverseOrder order);
     }
 }

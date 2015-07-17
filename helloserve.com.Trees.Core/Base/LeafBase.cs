@@ -9,6 +9,8 @@ namespace helloserve.com.Trees.Core
 {
     public abstract class LeafBase<T> : ILeaf<T>
     {
+        public bool HasValue { get; set; }
+
         public List<ILeaf<T>> Leafs { get; set; }
         public abstract void Add(T item);
 

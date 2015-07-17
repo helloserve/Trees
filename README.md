@@ -12,6 +12,8 @@ The current list of implemented trees are
 The future list of trees to be impleted include
 - Red/black trees
 
+All tree implementations are fully functional and can be used as is. This is based on default ```IComparer``` implementations for the various types.
+
 ## Interface segregation
 
 All objects implement either the ```ITree``` or ```ILeaf``` interfaces. These interfaces expose a limited and common set of operations, like adding an item to the data structure, traversing the data structure, or finding a specific item in the data structure.

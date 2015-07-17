@@ -16,6 +16,7 @@ namespace helloserve.com.Trees.Core.Base
 
         public ILeaf<T> Leaf { get; set; }
         public abstract void Add(T item);
+        public abstract void AddRange(IEnumerable<T> collection);
         public abstract IList<T> Traverse(TreeTraverseMode mode, TreeTraverseOrder order);
     }
 }
