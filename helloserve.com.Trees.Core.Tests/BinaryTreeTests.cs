@@ -16,7 +16,7 @@ namespace helloserve.com.Trees.Core.Tests
             Tree.Add(new SimpleObject() { StringValue = "Hello" });
 
             Assert.IsTrue(Tree.Leaf != null);
-            Assert.IsTrue(Tree.Leaf.Leafs.Count == 0);
+            Assert.IsTrue(Tree.Leaf.Leafs == null);
         }
 
         [TestMethod]
@@ -113,6 +113,179 @@ namespace helloserve.com.Trees.Core.Tests
             Assert.IsTrue(items[2].StringValue == "Alpha!");
             Assert.IsTrue(items[1].StringValue == "Hello");
             Assert.IsTrue(items[0].StringValue == "Zulu");
-        }    
+        }
+
+        [TestMethod]
+        public void BinaryTree_NoComparer_AddSixStringItems_RemoveMiddle_TraverseDepthFirst_InOrder()
+        {
+            Setup(new BinaryTree<SimpleObject, string>(x => x.StringValue));
+
+            SimpleObject obj = new SimpleObject() { StringValue = "Charlie" };
+
+            Tree.Add(new SimpleObject() { StringValue = "Hello" });
+            Tree.Add(obj);
+            Tree.Add(new SimpleObject() { StringValue = "Bravo" });
+            Tree.Add(new SimpleObject() { StringValue = "Alpha!" });
+            Tree.Add(new SimpleObject() { StringValue = "Zulu" });
+            Tree.Add(new SimpleObject() { StringValue = "Delta" });
+
+            Tree.Remove(obj);
+
+            IList<SimpleObject> items = Tree.Traverse(TreeTraverseMode.DepthFirst, TreeTraverseOrder.InOrder);
+
+            Assert.IsTrue(items[0].StringValue == "Alpha!");
+            Assert.IsTrue(items[1].StringValue == "Bravo");            
+            Assert.IsTrue(items[2].StringValue == "Delta");
+            Assert.IsTrue(items[3].StringValue == "Hello");
+            Assert.IsTrue(items[4].StringValue == "Zulu");
+        }
+
+        [TestMethod]
+        public void BinaryTree_NoComparer_AddSixStringItems_RemoveMiddle_TraverseDepthFirst_PreOrder()
+        {
+            Setup(new BinaryTree<SimpleObject, string>(x => x.StringValue));
+
+            SimpleObject obj = new SimpleObject() { StringValue = "Charlie" };
+
+            Tree.Add(new SimpleObject() { StringValue = "Hello" });
+            Tree.Add(obj);
+            Tree.Add(new SimpleObject() { StringValue = "Bravo" });
+            Tree.Add(new SimpleObject() { StringValue = "Alpha!" });
+            Tree.Add(new SimpleObject() { StringValue = "Zulu" });
+            Tree.Add(new SimpleObject() { StringValue = "Delta" });
+
+            Tree.Remove(obj);
+
+            IList<SimpleObject> items = Tree.Traverse(TreeTraverseMode.DepthFirst, TreeTraverseOrder.PreOrder);
+
+            Assert.IsTrue(items[0].StringValue == "Hello");
+            Assert.IsTrue(items[1].StringValue == "Bravo");
+            Assert.IsTrue(items[2].StringValue == "Alpha!");
+            Assert.IsTrue(items[3].StringValue == "Delta");
+            Assert.IsTrue(items[4].StringValue == "Zulu");
+        }
+
+        [TestMethod]
+        public void BinaryTree_NoComparer_AddSixStringItems_RemoveHead_TraverseDepthFirst_InOrder()
+        {
+            Setup(new BinaryTree<SimpleObject, string>(x => x.StringValue));
+
+            SimpleObject obj = new SimpleObject() { StringValue = "Hello" };
+
+            Tree.Add(obj);
+            Tree.Add(new SimpleObject() { StringValue = "Charlie" });
+            Tree.Add(new SimpleObject() { StringValue = "Bravo" });
+            Tree.Add(new SimpleObject() { StringValue = "Alpha!" });
+            Tree.Add(new SimpleObject() { StringValue = "Zulu" });
+            Tree.Add(new SimpleObject() { StringValue = "Delta" });
+
+            Tree.Remove(obj);
+
+            IList<SimpleObject> items = Tree.Traverse(TreeTraverseMode.DepthFirst, TreeTraverseOrder.InOrder);
+
+            Assert.IsTrue(items[0].StringValue == "Alpha!");
+            Assert.IsTrue(items[1].StringValue == "Bravo");
+            Assert.IsTrue(items[2].StringValue == "Charlie");
+            Assert.IsTrue(items[3].StringValue == "Delta");
+            Assert.IsTrue(items[4].StringValue == "Zulu");
+        }
+
+        [TestMethod]
+        public void BinaryTree_NoComparer_AddSixStringItems_ContainsHead()
+        {
+            Setup(new BinaryTree<SimpleObject, string>(x => x.StringValue));
+
+            SimpleObject obj = new SimpleObject() { StringValue = "Hello" };
+
+            Tree.Add(obj);
+            Tree.Add(new SimpleObject() { StringValue = "Charlie" });
+            Tree.Add(new SimpleObject() { StringValue = "Bravo" });
+            Tree.Add(new SimpleObject() { StringValue = "Alpha!" });
+            Tree.Add(new SimpleObject() { StringValue = "Zulu" });
+            Tree.Add(new SimpleObject() { StringValue = "Delta" });
+
+            Assert.IsTrue(Tree.Contains(obj));
+        }
+
+        [TestMethod]
+        public void BinaryTree_NoComparer_AddSixStringItems_ContainsLeaf()
+        {
+            Setup(new BinaryTree<SimpleObject, string>(x => x.StringValue));
+
+            SimpleObject obj = new SimpleObject() { StringValue = "Delta" };
+
+            Tree.Add(new SimpleObject() { StringValue = "Hello" });
+            Tree.Add(new SimpleObject() { StringValue = "Charlie" });
+            Tree.Add(new SimpleObject() { StringValue = "Bravo" });
+            Tree.Add(new SimpleObject() { StringValue = "Alpha!" });
+            Tree.Add(new SimpleObject() { StringValue = "Zulu" });
+            Tree.Add(obj);
+
+            Assert.IsTrue(Tree.Contains(obj));
+        }
+
+        [TestMethod]
+        public void BinaryTree_NoComparer_AddSixStringItems_Clear()
+        {
+            Setup(new BinaryTree<SimpleObject, string>(x => x.StringValue, TreeTraverseMode.DepthFirst, TreeTraverseOrder.InOrder));
+
+            Tree.Add(new SimpleObject() { StringValue = "Hello" });
+            Tree.Add(new SimpleObject() { StringValue = "Charlie" });
+            Tree.Add(new SimpleObject() { StringValue = "Bravo" });
+            Tree.Add(new SimpleObject() { StringValue = "Alpha!" });
+            Tree.Add(new SimpleObject() { StringValue = "Zulu" });
+            Tree.Add(new SimpleObject() { StringValue = "Delta" });
+
+            Tree.Clear();
+            IList<SimpleObject> items = Tree.Traverse(null, null);
+
+            Assert.IsTrue(items.Count == 0);
+        }
+
+        [TestMethod]
+        public void BinaryTree_NoComparer_AddSixStringItems_CopyTo_InOrder()
+        {
+            Setup(new BinaryTree<SimpleObject, string>(x => x.StringValue, TreeTraverseMode.DepthFirst, TreeTraverseOrder.InOrder));
+
+            Tree.Add(new SimpleObject() { StringValue = "Hello" });
+            Tree.Add(new SimpleObject() { StringValue = "Charlie" });
+            Tree.Add(new SimpleObject() { StringValue = "Bravo" });
+            Tree.Add(new SimpleObject() { StringValue = "Alpha!" });
+            Tree.Add(new SimpleObject() { StringValue = "Zulu" });
+            Tree.Add(new SimpleObject() { StringValue = "Delta" });
+
+            SimpleObject[] items = new SimpleObject[6];
+            Tree.CopyTo(items, 0);
+
+            Assert.IsTrue(items[0].StringValue == "Alpha!");
+            Assert.IsTrue(items[1].StringValue == "Bravo");
+            Assert.IsTrue(items[2].StringValue == "Charlie");
+            Assert.IsTrue(items[3].StringValue == "Delta");
+            Assert.IsTrue(items[4].StringValue == "Hello");
+            Assert.IsTrue(items[5].StringValue == "Zulu");
+        }
+
+        [TestMethod]
+        public void BinaryTree_NoComparer_AddSixStringItems_CopyTo_PreOrder()
+        {
+            Setup(new BinaryTree<SimpleObject, string>(x => x.StringValue, TreeTraverseMode.DepthFirst, TreeTraverseOrder.PreOrder));
+
+            Tree.Add(new SimpleObject() { StringValue = "Hello" });
+            Tree.Add(new SimpleObject() { StringValue = "Charlie" });
+            Tree.Add(new SimpleObject() { StringValue = "Bravo" });
+            Tree.Add(new SimpleObject() { StringValue = "Alpha!" });
+            Tree.Add(new SimpleObject() { StringValue = "Zulu" });
+            Tree.Add(new SimpleObject() { StringValue = "Delta" });
+
+            SimpleObject[] items = new SimpleObject[6];
+            Tree.CopyTo(items, 0);
+
+            Assert.IsTrue(items[0].StringValue == "Hello");
+            Assert.IsTrue(items[1].StringValue == "Charlie");
+            Assert.IsTrue(items[2].StringValue == "Bravo");
+            Assert.IsTrue(items[3].StringValue == "Alpha!");
+            Assert.IsTrue(items[4].StringValue == "Delta");
+            Assert.IsTrue(items[5].StringValue == "Zulu");
+        }
     }
 }

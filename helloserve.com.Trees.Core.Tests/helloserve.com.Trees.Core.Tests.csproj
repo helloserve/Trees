@@ -54,6 +54,7 @@
   <ItemGroup>
     <Compile Include="Base\BaseTests.cs" />
     <Compile Include="Base\SimpleObject.cs" />
+    <Compile Include="BinaryTreeEnumeratorTests.cs" />
     <Compile Include="BinaryTreeTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SimpleBinaryTreeTests.cs" />

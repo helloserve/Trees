@@ -11,9 +11,14 @@ namespace helloserve.com.Trees.Core
     {
         public bool HasValue { get; set; }
 
+        public ILeaf<T> Parent { get; set; }
         public List<ILeaf<T>> Leafs { get; set; }
-        public abstract void Add(T item);
-
-        protected abstract ILeaf<T> FindLeaf(T item);
+        public abstract T Value { get; set; }
+        
+        internal abstract void Add(T item, ILeaf<T> parent);
+        protected abstract ILeaf<T> AddLeafAt(T item);
+        internal abstract ILeaf<T> FindLeaf(object key);
+        internal abstract void Clear();
+        internal abstract bool Remove();
     }
 }
